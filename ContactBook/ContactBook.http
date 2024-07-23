@@ -1,0 +1,6 @@
+@ContactBook_HostAddress = http://localhost:5037
+
+GET {{ContactBook_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
