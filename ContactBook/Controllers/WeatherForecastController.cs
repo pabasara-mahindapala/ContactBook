@@ -1,3 +1,4 @@
+using ContactBook.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBook.Controllers

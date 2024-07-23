@@ -1,4 +1,4 @@
-namespace ContactBook
+namespace ContactBook.Domain
 {
     public class WeatherForecast
     {
