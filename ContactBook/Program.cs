@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<IUserWriteRepository, UserWriteRepository>();
+builder.Services.AddTransient<IUserReadRepository, UserReadRepository>();
 builder.Services.AddTransient<UserAggregate>();
 
 builder.Services.AddControllers();
