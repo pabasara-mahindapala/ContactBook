@@ -20,7 +20,7 @@ namespace ContactBook.Aggregates
 
         public User HandleCreateUserCommand(CreateUserCommand command)
         {
-            User user = new User(command.Id, command.FirstName, command.LastName);
+            User user = new User(Guid.NewGuid().ToString(), command.FirstName, command.LastName);
             _userWriteRepository.Create(user);
             return user;
         }
