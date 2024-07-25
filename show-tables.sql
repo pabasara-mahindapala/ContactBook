@@ -3,7 +3,5 @@ SELECT * FROM Contacts;
 SELECT * FROM Addresses;
 SELECT * FROM UserAddresses;
 SELECT * FROM AddressByState;
-SELECT * FROM AddressDetails;
 SELECT * FROM UserContacts;
 SELECT * FROM ContactByType;
-SELECT * FROM ContactDetails;

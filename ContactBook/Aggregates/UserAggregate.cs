@@ -1,5 +1,6 @@
 ﻿using ContactBook.Commands;
 using ContactBook.Domain;
+using ContactBook.Projectors;
 using ContactBook.Repositories;
 
 namespace ContactBook.Aggregates
@@ -7,10 +8,14 @@ namespace ContactBook.Aggregates
     public class UserAggregate
     {
         private readonly IUserWriteRepository _userWriteRepository;
+        private readonly IUserProjector _userProjector;
 
-        public UserAggregate(IUserWriteRepository userWriteRepository)
+        public UserAggregate(
+            IUserWriteRepository userWriteRepository,
+            IUserProjector userProjector)
         {
             _userWriteRepository = userWriteRepository;
+            _userProjector = userProjector;
         }
 
         public User HandleCreateUserCommand(CreateUserCommand command)
@@ -25,6 +30,7 @@ namespace ContactBook.Aggregates
             User user = _userWriteRepository.Get(command.Id);            
             user.Contacts = UpdateContacts(user, command.Contacts);
             user.Addresses = UpdateAddresses(user, command.Addresses);
+            _userProjector.Project(user);
             return user;
         }
 

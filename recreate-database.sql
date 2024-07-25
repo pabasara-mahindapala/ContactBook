@@ -40,13 +40,6 @@ CREATE TABLE AddressByState
 (
     Id NVARCHAR(255) PRIMARY KEY,
     State NVARCHAR(255) NOT NULL,
-    AddressDetailsId NVARCHAR(255) NOT NULL,
-    FOREIGN KEY(AddressDetailsId) REFERENCES AddressDetails(Id)
-);
-
-CREATE TABLE AddressDetails
-(
-    Id NVARCHAR(255) PRIMARY KEY,
     City NVARCHAR(255) NOT NULL,
     Postcode NVARCHAR(255) NOT NULL
 );
@@ -63,12 +56,5 @@ CREATE TABLE ContactByType
 (
     Id NVARCHAR(255) PRIMARY KEY,
     Type NVARCHAR(255) NOT NULL,
-    ContactDetailsId NVARCHAR(255) NOT NULL,
-    FOREIGN KEY(ContactDetailsId) REFERENCES ContactDetails(Id)
-);
-
-CREATE TABLE ContactDetails
-(
-    Id NVARCHAR(255) PRIMARY KEY,
     Detail NVARCHAR(255) NOT NULL
 );

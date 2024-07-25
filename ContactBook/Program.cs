@@ -1,4 +1,6 @@
 using ContactBook.Aggregates;
+using ContactBook.Projections;
+using ContactBook.Projectors;
 using ContactBook.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<IUserWriteRepository, UserWriteRepository>();
 builder.Services.AddTransient<IUserReadRepository, UserReadRepository>();
+builder.Services.AddTransient<IUserProjector, UserProjector>();
 builder.Services.AddTransient<UserAggregate>();
+builder.Services.AddTransient<UserProjection>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

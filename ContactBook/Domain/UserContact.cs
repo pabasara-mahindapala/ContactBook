@@ -3,6 +3,6 @@
     public class UserContact
     {
         public string UserId { get; set; }
-        public Dictionary<string, Contact> ContactByTypeDictionary { get; set; }
+        public Dictionary<string, ContactByType> ContactByTypeDictionary { get; set; }
     }
 }

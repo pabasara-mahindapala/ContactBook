@@ -13,13 +13,13 @@ namespace ContactBook.Projections
             _userReadRepository = userReadRepository;
         }
 
-        public Contact Handle(ContactByTypeQuery query)
+        public ContactByType Handle(ContactByTypeQuery query)
         {
             UserContact userContact = _userReadRepository.GetUserContact(query.UserId);
             return userContact.ContactByTypeDictionary[query.ContactType];
         }
 
-        public Address Handle(AddressByStateQuery query)
+        public AddressByState Handle(AddressByStateQuery query)
         {
             UserAddress userAddress = _userReadRepository.GetUserAddress(query.UserId);
             return userAddress.AddressByStateDictionary[query.State];

@@ -1,6 +1,7 @@
 using ContactBook.Aggregates;
 using ContactBook.Commands;
-using ContactBook.Repositories;
+using ContactBook.Projections;
+using ContactBook.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBook.Controllers
@@ -10,15 +11,15 @@ namespace ContactBook.Controllers
     public class ContactBookController : ControllerBase
     {
         private readonly UserAggregate _userAggregate;
-        private readonly IUserReadRepository _userReadRepository;
+        private readonly UserProjection _userProjection;
 
         public ContactBookController(
             UserAggregate userAggregate,
-            IUserReadRepository userReadRepository
+            UserProjection userProjection
         )
         {
             _userAggregate = userAggregate;
-            _userReadRepository = userReadRepository;
+            _userProjection = userProjection;
         }
 
         [HttpPost("CreateUser", Name = "CreateUser")]
@@ -35,18 +36,18 @@ namespace ContactBook.Controllers
             return Ok(user);
         }
 
-        [HttpGet("GetUserAddress/{userId}", Name = "GetUserAddress")]
-        public IActionResult GetUserAddress([FromRoute] string userId)
+        [HttpGet("GetUserAddress", Name = "GetUserAddress")]
+        public IActionResult GetUserAddress([FromBody] AddressByStateQuery query)
         {
-            var userAddress = _userReadRepository.GetUserAddress(userId);
-            return Ok(userAddress);
+            var address = _userProjection.Handle(query);
+            return Ok(address);
         }
 
-        [HttpGet("GetUserContact/{userId}", Name = "GetUserContact")]
-        public IActionResult GetUserContact([FromRoute] string userId)
+        [HttpGet("GetUserContact", Name = "GetUserContact")]
+        public IActionResult GetUserContact([FromBody] ContactByTypeQuery query)
         {
-            var userContact = _userReadRepository.GetUserContact(userId);
-            return Ok(userContact);
+            var contact = _userProjection.Handle(query);
+            return Ok(contact);
         }
     }
 }
