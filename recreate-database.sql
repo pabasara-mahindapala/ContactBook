@@ -48,9 +48,7 @@ CREATE TABLE AddressDetails
 (
     Id NVARCHAR(255) PRIMARY KEY,
     City NVARCHAR(255) NOT NULL,
-    Postcode NVARCHAR(255) NOT NULL,
-    AddressByStateId NVARCHAR(255) NOT NULL,
-    FOREIGN KEY(AddressByStateId) REFERENCES AddressByState(Id)
+    Postcode NVARCHAR(255) NOT NULL
 );
 
 CREATE TABLE UserContacts
@@ -72,7 +70,5 @@ CREATE TABLE ContactByType
 CREATE TABLE ContactDetails
 (
     Id NVARCHAR(255) PRIMARY KEY,
-    Detail NVARCHAR(255) NOT NULL,
-    ContactByTypeId NVARCHAR(255) NOT NULL,
-    FOREIGN KEY(ContactByTypeId) REFERENCES ContactByType(Id)
+    Detail NVARCHAR(255) NOT NULL
 );

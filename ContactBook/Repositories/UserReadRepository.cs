@@ -50,7 +50,37 @@ namespace ContactBook.Repositories
 
         public UserContact GetUserContact(string userId)
         {
-            throw new NotImplementedException();
+            using var connection = new SqliteConnection(_connectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+        SELECT uc.UserId, cbt.Type, cd.Id, cd.Detail
+        FROM UserContacts uc
+        JOIN ContactByType cbt ON uc.ContactByTypeId = cbt.Id
+        JOIN ContactDetails cd ON cbt.ContactDetailsId = cd.Id
+        WHERE uc.UserId = @UserId";
+            command.Parameters.AddWithValue("@UserId", userId);
+
+            using var reader = command.ExecuteReader();
+
+            var userContact = new UserContact();
+            userContact.UserId = userId;
+            userContact.ContactByTypeDictionary = new Dictionary<string, Contact>();
+
+            while (reader.Read())
+            {
+                var type = reader.GetString(1);
+                var contact = new Contact
+                {
+                    Id = reader.GetString(2),
+                    Detail = reader.GetString(3)
+                };
+
+                userContact.ContactByTypeDictionary[type] = contact;
+            }
+
+            return userContact;
         }
     }
 }

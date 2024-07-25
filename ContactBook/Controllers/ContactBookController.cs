@@ -21,24 +21,31 @@ namespace ContactBook.Controllers
             _userReadRepository = userReadRepository;
         }
 
-        [HttpPost(Name = "CreateUser")]
+        [HttpPost("CreateUser", Name = "CreateUser")]
         public IActionResult CreateUser(CreateUserCommand command)
         {
             var user = _userAggregate.HandleCreateUserCommand(command);
-            return CreatedAtRoute("GetWeatherForecast", new { id = user.Id }, user);
+            return Ok(user);
         }
 
-        [HttpPut(Name = "UpdateUser")]
+        [HttpPost("UpdateUser", Name = "UpdateUser")]
         public IActionResult UpdateUser(UpdateUserCommand command)
         {
             var user = _userAggregate.HandleUpdateUserCommand(command);
-            return CreatedAtRoute("GetWeatherForecast", new { id = user.Id }, user);
+            return Ok(user);
         }
 
         [HttpGet("GetUserAddress/{userId}", Name = "GetUserAddress")]
         public IActionResult GetUserAddress([FromRoute] string userId)
         {
-            var userContact = _userReadRepository.GetUserAddress(userId);
+            var userAddress = _userReadRepository.GetUserAddress(userId);
+            return Ok(userAddress);
+        }
+
+        [HttpGet("GetUserContact/{userId}", Name = "GetUserContact")]
+        public IActionResult GetUserContact([FromRoute] string userId)
+        {
+            var userContact = _userReadRepository.GetUserContact(userId);
             return Ok(userContact);
         }
     }
