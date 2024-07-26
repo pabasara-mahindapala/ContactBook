@@ -2,13 +2,13 @@
 using ContactBook.Queries;
 using ContactBook.Repositories;
 
-namespace ContactBook.Projections
+namespace ContactBook.Services
 {
-    public class UserProjection
+    public class UserReadService : IUserReadService
     {
         private readonly IUserReadRepository _userReadRepository;
 
-        public UserProjection(IUserReadRepository userReadRepository)
+        public UserReadService(IUserReadRepository userReadRepository)
         {
             _userReadRepository = userReadRepository;
         }

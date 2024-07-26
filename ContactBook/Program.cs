@@ -1,13 +1,14 @@
-using ContactBook.Aggregates;
-using ContactBook.Projections;
 using ContactBook.Projectors;
 using ContactBook.Repositories;
+using ContactBook.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<IUserWriteRepository, UserWriteRepository>();
 builder.Services.AddTransient<IUserReadRepository, UserReadRepository>();
+builder.Services.AddTransient<IUserWriteService, UserWriteService>();
+builder.Services.AddTransient<IUserReadService, UserReadService>();
 builder.Services.AddTransient<IUserProjector, UserProjector>();
 
 builder.Services.AddControllers();

@@ -3,14 +3,14 @@ using ContactBook.Domain;
 using ContactBook.Projectors;
 using ContactBook.Repositories;
 
-namespace ContactBook.Aggregates
+namespace ContactBook.Services
 {
-    public class UserAggregate
+    public class UserWriteService : IUserWriteService
     {
         private readonly IUserWriteRepository _userWriteRepository;
         private readonly IUserProjector _userProjector;
 
-        public UserAggregate(
+        public UserWriteService(
             IUserWriteRepository userWriteRepository,
             IUserProjector userProjector)
         {
@@ -27,7 +27,7 @@ namespace ContactBook.Aggregates
 
         public User HandleUpdateUserCommand(UpdateUserCommand command)
         {
-            User user = _userWriteRepository.Get(command.Id);            
+            User user = _userWriteRepository.Get(command.Id);
             user.Contacts = UpdateContacts(user, command.Contacts);
             user.Addresses = UpdateAddresses(user, command.Addresses);
             _userProjector.Project(user);

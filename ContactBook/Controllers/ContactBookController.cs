@@ -1,9 +1,6 @@
-using ContactBook.Aggregates;
 using ContactBook.Commands;
-using ContactBook.Projections;
-using ContactBook.Projectors;
 using ContactBook.Queries;
-using ContactBook.Repositories;
+using ContactBook.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBook.Controllers
@@ -12,34 +9,29 @@ namespace ContactBook.Controllers
     [Route("[controller]")]
     public class ContactBookController : ControllerBase
     {
-        private readonly IUserWriteRepository _userWriteRepository;
-        private readonly IUserReadRepository _userReadRepository;
-        private readonly IUserProjector _userProjector;
+        private readonly IUserWriteService _userWriteService;
+        private readonly IUserReadService _userReadService;
 
         public ContactBookController(
-            IUserWriteRepository userWriteRepository,
-            IUserReadRepository userReadRepository,
-            IUserProjector userProjector
+            IUserWriteService userWriteService,
+            IUserReadService userReadService
         )
         {
-            _userWriteRepository = userWriteRepository;
-            _userReadRepository = userReadRepository;
-            _userProjector = userProjector;
+            _userWriteService = userWriteService;
+            _userReadService = userReadService;
         }
 
         [HttpPost("CreateUser", Name = "CreateUser")]
         public IActionResult CreateUser(CreateUserCommand command)
         {
-            var userAggregate = new UserAggregate(_userWriteRepository, _userProjector);
-            var user = userAggregate.HandleCreateUserCommand(command);
+            var user = _userWriteService.HandleCreateUserCommand(command);
             return Ok(user);
         }
 
         [HttpPost("UpdateUser", Name = "UpdateUser")]
         public IActionResult UpdateUser(UpdateUserCommand command)
         {
-            var userAggregate = new UserAggregate(_userWriteRepository, _userProjector);
-            var user = userAggregate.HandleUpdateUserCommand(command);
+            var user = _userWriteService.HandleUpdateUserCommand(command);
             return Ok(user);
         }
 
@@ -50,8 +42,7 @@ namespace ContactBook.Controllers
                 UserId = userId,
                 State = state
             };
-            var userProjection = new UserProjection(_userReadRepository);
-            var address = userProjection.Handle(query);
+            var address = _userReadService.Handle(query);
             return Ok(address);
         }
 
@@ -63,8 +54,7 @@ namespace ContactBook.Controllers
                 UserId = userId,
                 ContactType = contactType
             };
-            var userProjection = new UserProjection(_userReadRepository);
-            var contact = userProjection.Handle(query);
+            var contact = _userReadService.Handle(query);
             return Ok(contact);
         }
     }
