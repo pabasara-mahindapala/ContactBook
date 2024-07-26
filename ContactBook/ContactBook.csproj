@@ -8,12 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <Compile Remove="Projections\**" />
+    <Content Remove="Projections\**" />
+    <EmbeddedResource Remove="Projections\**" />
+    <None Remove="Projections\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Projections\" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
 </Project>
