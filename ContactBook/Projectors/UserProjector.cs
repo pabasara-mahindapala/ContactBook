@@ -26,7 +26,7 @@ namespace ContactBook.Projectors
                 {
                     var contactByType = new ContactByType
                     {
-                        Id = Guid.NewGuid().ToString(),
+                        Id = contact.Id ?? Guid.NewGuid().ToString(),
                         Type = contact.Type,
                         Detail = contact.Detail
                     };
@@ -49,7 +49,7 @@ namespace ContactBook.Projectors
                 {
                     var addressByState = new AddressByState
                     {
-                        Id = Guid.NewGuid().ToString(),
+                        Id =  address.Id ?? Guid.NewGuid().ToString(),
                         State = address.State,
                         City = address.City,
                         Postcode = address.Postcode
