@@ -1,6 +1,6 @@
 using ContactBook.Commands;
 using ContactBook.Queries;
-using ContactBook.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactBook.Controllers
@@ -9,52 +9,47 @@ namespace ContactBook.Controllers
     [Route("[controller]")]
     public class ContactBookController : ControllerBase
     {
-        private readonly IUserWriteService _userWriteService;
-        private readonly IUserReadService _userReadService;
+        private readonly IMediator _mediator;
 
-        public ContactBookController(
-            IUserWriteService userWriteService,
-            IUserReadService userReadService
-        )
+        public ContactBookController(IMediator mediator)
         {
-            _userWriteService = userWriteService;
-            _userReadService = userReadService;
+            _mediator = mediator;
         }
 
         [HttpPost("CreateUser", Name = "CreateUser")]
-        public IActionResult CreateUser(CreateUserCommand command)
+        public async Task<IActionResult> CreateUser(CreateUserCommand command)
         {
-            var user = _userWriteService.HandleCreateUserCommand(command);
+            var user = await _mediator.Send(command);
             return Ok(user);
         }
 
         [HttpPost("UpdateUser", Name = "UpdateUser")]
-        public IActionResult UpdateUser(UpdateUserCommand command)
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand command)
         {
-            var user = _userWriteService.HandleUpdateUserCommand(command);
+            var user = await _mediator.Send(command);
             return Ok(user);
         }
 
         [HttpGet("GetUserAddress", Name = "GetUserAddress")]
-        public IActionResult GetUserAddress([FromQuery] string userId, [FromQuery] string state)
+        public async Task<IActionResult> GetUserAddress([FromQuery] string userId, [FromQuery] string state)
         {
             var query = new AddressByStateQuery{
                 UserId = userId,
                 State = state
             };
-            var address = _userReadService.Handle(query);
+            var address = await _mediator.Send(query);
             return Ok(address);
         }
 
         [HttpGet("GetUserContact", Name = "GetUserContact")]
-        public IActionResult GetUserContact([FromQuery] string userId, [FromQuery] string contactType)
+        public async Task<IActionResult> GetUserContact([FromQuery] string userId, [FromQuery] string contactType)
         {
             var query = new ContactByTypeQuery
             {
                 UserId = userId,
                 ContactType = contactType
             };
-            var contact = _userReadService.Handle(query);
+            var contact = await _mediator.Send(query);
             return Ok(contact);
         }
     }

@@ -1,16 +1,17 @@
-﻿using ContactBook.Commands;
+using ContactBook.Commands;
 using ContactBook.Domain;
 using ContactBook.Projectors;
 using ContactBook.Repositories;
+using MediatR;
 
-namespace ContactBook.Services
+namespace ContactBook.Handlers
 {
-    public class UserWriteService : IUserWriteService
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, User>
     {
         private readonly IUserWriteRepository _userWriteRepository;
         private readonly IUserProjector _userProjector;
 
-        public UserWriteService(
+        public UpdateUserCommandHandler(
             IUserWriteRepository userWriteRepository,
             IUserProjector userProjector)
         {
@@ -18,20 +19,13 @@ namespace ContactBook.Services
             _userProjector = userProjector;
         }
 
-        public User HandleCreateUserCommand(CreateUserCommand command)
+        public Task<User> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            User user = new User(Guid.NewGuid().ToString(), command.FirstName, command.LastName);
-            _userWriteRepository.Create(user);
-            return user;
-        }
-
-        public User HandleUpdateUserCommand(UpdateUserCommand command)
-        {
-            User user = _userWriteRepository.Get(command.Id);
-            user.Contacts = UpdateContacts(user, command.Contacts);
-            user.Addresses = UpdateAddresses(user, command.Addresses);
+            User user = _userWriteRepository.Get(request.Id);
+            user.Contacts = UpdateContacts(user, request.Contacts);
+            user.Addresses = UpdateAddresses(user, request.Addresses);
             _userProjector.Project(user);
-            return user;
+            return Task.FromResult(user);
         }
 
         private List<Address> UpdateAddresses(User user, List<Address> addresses)
