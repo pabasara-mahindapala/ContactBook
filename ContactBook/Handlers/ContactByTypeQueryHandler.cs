@@ -14,11 +14,11 @@ namespace ContactBook.Handlers
             _userReadRepository = userReadRepository;
         }
 
-        public Task<ContactByType> Handle(ContactByTypeQuery request, CancellationToken cancellationToken)
+        public async Task<ContactByType> Handle(ContactByTypeQuery request, CancellationToken cancellationToken)
         {
-            UserContact userContact = _userReadRepository.GetUserContact(request.UserId);
+            UserContact userContact = await _userReadRepository.GetUserContactAsync(request.UserId);
             var result = userContact.ContactByTypeDictionary[request.ContactType];
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

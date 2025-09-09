@@ -12,10 +12,10 @@ namespace ContactBook.Repositories
             _connectionString = "Data Source=AppData/contact-database.db;";
         }
 
-        public void CreateAddressByState(AddressByState addressByState)
+        public async Task CreateAddressByStateAsync(AddressByState addressByState)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = "INSERT INTO AddressByState (Id, State, City, Postcode) VALUES (@Id, @State, @City, @Postcode)";
@@ -25,13 +25,13 @@ namespace ContactBook.Repositories
             command.Parameters.AddWithValue("@City", addressByState.City);
             command.Parameters.AddWithValue("@Postcode", addressByState.Postcode);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
         }
 
-        public void CreateContactByType(ContactByType contactByType)
+        public async Task CreateContactByTypeAsync(ContactByType contactByType)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = "INSERT INTO ContactByType (Id, Type, Detail) VALUES (@Id, @Type, @Detail)";
@@ -40,13 +40,13 @@ namespace ContactBook.Repositories
             command.Parameters.AddWithValue("@Type", contactByType.Type);
             command.Parameters.AddWithValue("@Detail", contactByType.Detail);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
         }
 
-        public void CreateUserAddress(string userId, string addressByStateId)
+        public async Task CreateUserAddressAsync(string userId, string addressByStateId)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = "INSERT INTO UserAddresses (UserId, AddressByStateId) VALUES (@UserId, @AddressByStateId)";
@@ -54,13 +54,13 @@ namespace ContactBook.Repositories
             command.Parameters.AddWithValue("@UserId", userId);
             command.Parameters.AddWithValue("@AddressByStateId", addressByStateId);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
         }
 
-        public void CreateUserContact(string userId, string contactByTypeId)
+        public async Task CreateUserContactAsync(string userId, string contactByTypeId)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = "INSERT INTO UserContacts (UserId, ContactByTypeId) VALUES (@UserId, @ContactByTypeId)";
@@ -68,13 +68,13 @@ namespace ContactBook.Repositories
             command.Parameters.AddWithValue("@UserId", userId);
             command.Parameters.AddWithValue("@ContactByTypeId", contactByTypeId);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
         }
 
-        public UserAddress GetUserAddress(string userId)
+        public async Task<UserAddress> GetUserAddressAsync(string userId)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
@@ -84,13 +84,13 @@ namespace ContactBook.Repositories
         WHERE ua.UserId = @UserId";
             command.Parameters.AddWithValue("@UserId", userId);
 
-            using var reader = command.ExecuteReader();
+            using var reader = await command.ExecuteReaderAsync();
 
             var userAddress = new UserAddress();
             userAddress.UserId = userId;
             userAddress.AddressByStateDictionary = new Dictionary<string, AddressByState>();
 
-            while (reader.Read())
+            while (await reader.ReadAsync())
             {
                 var state = reader.GetString(2);
                 var address = new AddressByState
@@ -107,10 +107,10 @@ namespace ContactBook.Repositories
             return userAddress;
         }
 
-        public UserContact GetUserContact(string userId)
+        public async Task<UserContact> GetUserContactAsync(string userId)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = @"
@@ -120,13 +120,13 @@ namespace ContactBook.Repositories
         WHERE uc.UserId = @UserId";
             command.Parameters.AddWithValue("@UserId", userId);
 
-            using var reader = command.ExecuteReader();
+            using var reader = await command.ExecuteReaderAsync();
 
             var userContact = new UserContact();
             userContact.UserId = userId;
             userContact.ContactByTypeDictionary = new Dictionary<string, ContactByType>();
 
-            while (reader.Read())
+            while (await reader.ReadAsync())
             {
                 var type = reader.GetString(2);
                 var contact = new ContactByType
@@ -142,10 +142,10 @@ namespace ContactBook.Repositories
             return userContact;
         }
 
-        public void UpdateAddressByState(AddressByState addressByState)
+        public async Task UpdateAddressByStateAsync(AddressByState addressByState)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = "UPDATE AddressByState SET State = @State, City = @City, Postcode = @Postcode WHERE Id = @Id";
@@ -155,13 +155,13 @@ namespace ContactBook.Repositories
             command.Parameters.AddWithValue("@City", addressByState.City);
             command.Parameters.AddWithValue("@Postcode", addressByState.Postcode);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
         }
 
-        public void UpdateContactByType(ContactByType contactByType)
+        public async Task UpdateContactByTypeAsync(ContactByType contactByType)
         {
             using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
+            await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
             command.CommandText = "UPDATE ContactByType SET Type = @Type, Detail = @Detail WHERE Id = @Id";
@@ -170,7 +170,7 @@ namespace ContactBook.Repositories
             command.Parameters.AddWithValue("@Type", contactByType.Type);
             command.Parameters.AddWithValue("@Detail", contactByType.Detail);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
         }
     }
 }

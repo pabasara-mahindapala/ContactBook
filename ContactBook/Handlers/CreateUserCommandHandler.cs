@@ -14,11 +14,11 @@ namespace ContactBook.Handlers
             _userWriteRepository = userWriteRepository;
         }
 
-        public Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             User user = new User(Guid.NewGuid().ToString(), request.FirstName, request.LastName);
-            _userWriteRepository.Create(user);
-            return Task.FromResult(user);
+            await _userWriteRepository.CreateAsync(user);
+            return user;
         }
     }
 }

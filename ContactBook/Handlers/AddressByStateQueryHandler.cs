@@ -14,11 +14,11 @@ namespace ContactBook.Handlers
             _userReadRepository = userReadRepository;
         }
 
-        public Task<AddressByState> Handle(AddressByStateQuery request, CancellationToken cancellationToken)
+        public async Task<AddressByState> Handle(AddressByStateQuery request, CancellationToken cancellationToken)
         {
-            UserAddress userAddress = _userReadRepository.GetUserAddress(request.UserId);
+            UserAddress userAddress = await _userReadRepository.GetUserAddressAsync(request.UserId);
             var result = userAddress.AddressByStateDictionary[request.State];
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

@@ -11,16 +11,16 @@ namespace ContactBook.Projectors
             _userReadRepository = userReadRepository;
         }
 
-        public void Project(User user)
+        public async Task ProjectAsync(User user)
         {
-            UserContact userContact = _userReadRepository.GetUserContact(user.Id);
+            UserContact userContact = await _userReadRepository.GetUserContactAsync(user.Id);
             foreach (var contact in user.Contacts)
             {
                 if (userContact.ContactByTypeDictionary.ContainsKey(contact.Type))
                 {
                     var existingContact = userContact.ContactByTypeDictionary[contact.Type];
                     existingContact.Detail = contact.Detail;
-                    _userReadRepository.UpdateContactByType(existingContact);
+                    await _userReadRepository.UpdateContactByTypeAsync(existingContact);
                 }
                 else
                 {
@@ -30,12 +30,12 @@ namespace ContactBook.Projectors
                         Type = contact.Type,
                         Detail = contact.Detail
                     };
-                    _userReadRepository.CreateContactByType(contactByType);
-                    _userReadRepository.CreateUserContact(user.Id, contactByType.Id);
+                    await _userReadRepository.CreateContactByTypeAsync(contactByType);
+                    await _userReadRepository.CreateUserContactAsync(user.Id, contactByType.Id);
                 }
             }
 
-            UserAddress userAddress = _userReadRepository.GetUserAddress(user.Id);
+            UserAddress userAddress = await _userReadRepository.GetUserAddressAsync(user.Id);
             foreach (var address in user.Addresses)
             {
                 if (userAddress.AddressByStateDictionary.ContainsKey(address.State))
@@ -43,7 +43,7 @@ namespace ContactBook.Projectors
                     var existingAddress = userAddress.AddressByStateDictionary[address.State];
                     existingAddress.City = address.City;
                     existingAddress.Postcode = address.Postcode;
-                    _userReadRepository.UpdateAddressByState(existingAddress);
+                    await _userReadRepository.UpdateAddressByStateAsync(existingAddress);
                 }
                 else
                 {
@@ -54,8 +54,8 @@ namespace ContactBook.Projectors
                         City = address.City,
                         Postcode = address.Postcode
                     };
-                    _userReadRepository.CreateAddressByState(addressByState);
-                    _userReadRepository.CreateUserAddress(user.Id, addressByState.Id);
+                    await _userReadRepository.CreateAddressByStateAsync(addressByState);
+                    await _userReadRepository.CreateUserAddressAsync(user.Id, addressByState.Id);
                 }
             }
         }

@@ -19,46 +19,46 @@ namespace ContactBook.Handlers
             _userProjector = userProjector;
         }
 
-        public Task<User> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            User user = _userWriteRepository.Get(request.Id);
-            user.Contacts = UpdateContacts(user, request.Contacts);
-            user.Addresses = UpdateAddresses(user, request.Addresses);
-            _userProjector.Project(user);
-            return Task.FromResult(user);
+            User user = await _userWriteRepository.GetAsync(request.Id);
+            user.Contacts = await UpdateContactsAsync(user, request.Contacts);
+            user.Addresses = await UpdateAddressesAsync(user, request.Addresses);
+            await _userProjector.ProjectAsync(user);
+            return user;
         }
 
-        private List<Address> UpdateAddresses(User user, List<Address> addresses)
+        private async Task<List<Address>> UpdateAddressesAsync(User user, List<Address> addresses)
         {
             foreach (var address in addresses)
             {
                 address.UserId = user.Id;
-                var existingAddress = _userWriteRepository.GetAddress(address.Id);
+                var existingAddress = await _userWriteRepository.GetAddressAsync(address.Id);
                 if (existingAddress != null)
                 {
-                    _userWriteRepository.UpdateAddress(address);
+                    await _userWriteRepository.UpdateAddressAsync(address);
                 }
                 else
                 {
-                    _userWriteRepository.CreateAddress(address);
+                    await _userWriteRepository.CreateAddressAsync(address);
                 }
             }
             return addresses;
         }
 
-        private List<Contact> UpdateContacts(User user, List<Contact> contacts)
+        private async Task<List<Contact>> UpdateContactsAsync(User user, List<Contact> contacts)
         {
             foreach (var contact in contacts)
             {
                 contact.UserId = user.Id;
-                var existingContact = _userWriteRepository.GetContact(contact.Id);
+                var existingContact = await _userWriteRepository.GetContactAsync(contact.Id);
                 if (existingContact != null)
                 {
-                    _userWriteRepository.UpdateContact(contact);
+                    await _userWriteRepository.UpdateContactAsync(contact);
                 }
                 else
                 {
-                    _userWriteRepository.CreateContact(contact);
+                    await _userWriteRepository.CreateContactAsync(contact);
                 }
             }
             return contacts;
