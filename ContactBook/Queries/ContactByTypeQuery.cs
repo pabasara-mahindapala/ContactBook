@@ -1,6 +1,9 @@
-﻿namespace ContactBook.Queries
+﻿using ContactBook.Domain;
+using MediatR;
+
+namespace ContactBook.Queries
 {
-    public class ContactByTypeQuery
+    public class ContactByTypeQuery : IRequest<ContactByType>
     {
         public string UserId { get; set; }
         public string ContactType { get; set; }

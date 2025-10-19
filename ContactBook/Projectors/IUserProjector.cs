@@ -4,6 +4,6 @@ namespace ContactBook.Projectors
 {
     public interface IUserProjector
     {
-        void Project(User user);
+        Task ProjectAsync(User user);
     }
 }

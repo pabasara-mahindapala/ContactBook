@@ -4,13 +4,13 @@ namespace ContactBook.Repositories
 {
     public interface IUserReadRepository
     {
-        UserContact GetUserContact(string userId);
-        UserAddress GetUserAddress(string userId);
-        void CreateUserContact(string userId, string contactByTypeId);
-        void CreateContactByType(ContactByType contactByType);
-        void UpdateContactByType(ContactByType existingContact);
-        void CreateUserAddress(string id1, string id2);
-        void CreateAddressByState(AddressByState addressByState);
-        void UpdateAddressByState(AddressByState existingAddress);
+        Task<UserContact> GetUserContactAsync(string userId);
+        Task<UserAddress> GetUserAddressAsync(string userId);
+        Task CreateUserContactAsync(string userId, string contactByTypeId);
+        Task CreateContactByTypeAsync(ContactByType contactByType);
+        Task UpdateContactByTypeAsync(ContactByType existingContact);
+        Task CreateUserAddressAsync(string id1, string id2);
+        Task CreateAddressByStateAsync(AddressByState addressByState);
+        Task UpdateAddressByStateAsync(AddressByState existingAddress);
     }
 }
