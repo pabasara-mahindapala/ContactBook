@@ -4,7 +4,7 @@ namespace ContactBook.Tests.Domain;
 
 public class ContactTests
 {
-    [Fact]
+    [Test]
     public void Contact_CanSetAndGetProperties()
     {
         // Arrange
@@ -21,13 +21,13 @@ public class ContactTests
         contact.UserId = userId;
 
         // Assert
-        Assert.Equal(id, contact.Id);
-        Assert.Equal(type, contact.Type);
-        Assert.Equal(detail, contact.Detail);
-        Assert.Equal(userId, contact.UserId);
+        Assert.That(contact.Id, Is.EqualTo(id));
+        Assert.That(contact.Type, Is.EqualTo(type));
+        Assert.That(contact.Detail, Is.EqualTo(detail));
+        Assert.That(contact.UserId, Is.EqualTo(userId));
     }
 
-    [Fact]
+    [Test]
     public void Contact_CanBeCreatedWithObjectInitializer()
     {
         // Act
@@ -40,9 +40,9 @@ public class ContactTests
         };
 
         // Assert
-        Assert.Equal("1", contact.Id);
-        Assert.Equal("Phone", contact.Type);
-        Assert.Equal("555-1234", contact.Detail);
-        Assert.Equal("user-1", contact.UserId);
+        Assert.That(contact.Id, Is.EqualTo("1"));
+        Assert.That(contact.Type, Is.EqualTo("Phone"));
+        Assert.That(contact.Detail, Is.EqualTo("555-1234"));
+        Assert.That(contact.UserId, Is.EqualTo("user-1"));
     }
 }

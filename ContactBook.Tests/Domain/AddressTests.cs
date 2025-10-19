@@ -4,7 +4,7 @@ namespace ContactBook.Tests.Domain;
 
 public class AddressTests
 {
-    [Fact]
+    [Test]
     public void Address_CanSetAndGetProperties()
     {
         // Arrange
@@ -23,14 +23,14 @@ public class AddressTests
         address.UserId = userId;
 
         // Assert
-        Assert.Equal(id, address.Id);
-        Assert.Equal(city, address.City);
-        Assert.Equal(state, address.State);
-        Assert.Equal(postcode, address.Postcode);
-        Assert.Equal(userId, address.UserId);
+        Assert.That(address.Id, Is.EqualTo(id));
+        Assert.That(address.City, Is.EqualTo(city));
+        Assert.That(address.State, Is.EqualTo(state));
+        Assert.That(address.Postcode, Is.EqualTo(postcode));
+        Assert.That(address.UserId, Is.EqualTo(userId));
     }
 
-    [Fact]
+    [Test]
     public void Address_CanBeCreatedWithObjectInitializer()
     {
         // Act
@@ -44,10 +44,10 @@ public class AddressTests
         };
 
         // Assert
-        Assert.Equal("1", address.Id);
-        Assert.Equal("Los Angeles", address.City);
-        Assert.Equal("CA", address.State);
-        Assert.Equal("90001", address.Postcode);
-        Assert.Equal("user-1", address.UserId);
+        Assert.That(address.Id, Is.EqualTo("1"));
+        Assert.That(address.City, Is.EqualTo("Los Angeles"));
+        Assert.That(address.State, Is.EqualTo("CA"));
+        Assert.That(address.Postcode, Is.EqualTo("90001"));
+        Assert.That(address.UserId, Is.EqualTo("user-1"));
     }
 }

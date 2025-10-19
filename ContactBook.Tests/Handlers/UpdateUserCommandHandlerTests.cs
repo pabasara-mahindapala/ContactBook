@@ -9,7 +9,7 @@ namespace ContactBook.Tests.Handlers;
 
 public class UpdateUserCommandHandlerTests
 {
-    [Fact]
+    [Test]
     public async Task Handle_UpdatesUserContacts_Successfully()
     {
         // Arrange
@@ -37,14 +37,14 @@ public class UpdateUserCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Single(result.Contacts);
-        Assert.Equal("john@example.com", result.Contacts[0].Detail);
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Contacts, Has.Count.EqualTo(1));
+        Assert.That(result.Contacts[0].Detail, Is.EqualTo("john@example.com"));
         mockRepository.Verify(r => r.CreateContactAsync(It.Is<Contact>(c => c.UserId == userId)), Times.Once);
         mockProjector.Verify(p => p.ProjectAsync(It.IsAny<User>()), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public async Task Handle_UpdatesUserAddresses_Successfully()
     {
         // Arrange
@@ -72,13 +72,13 @@ public class UpdateUserCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Single(result.Addresses);
-        Assert.Equal("New York", result.Addresses[0].City);
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Addresses, Has.Count.EqualTo(1));
+        Assert.That(result.Addresses[0].City, Is.EqualTo("New York"));
         mockRepository.Verify(r => r.CreateAddressAsync(It.Is<Address>(a => a.UserId == userId)), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public async Task Handle_UpdatesExistingContact_WhenContactExists()
     {
         // Arrange
@@ -112,7 +112,7 @@ public class UpdateUserCommandHandlerTests
         mockRepository.Verify(r => r.CreateContactAsync(It.IsAny<Contact>()), Times.Never);
     }
 
-    [Fact]
+    [Test]
     public async Task Handle_UpdatesExistingAddress_WhenAddressExists()
     {
         // Arrange

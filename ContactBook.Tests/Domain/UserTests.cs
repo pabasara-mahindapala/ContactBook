@@ -4,7 +4,7 @@ namespace ContactBook.Tests.Domain;
 
 public class UserTests
 {
-    [Fact]
+    [Test]
     public void Constructor_SetsProperties_Correctly()
     {
         // Arrange
@@ -16,12 +16,12 @@ public class UserTests
         var user = new User(id, firstName, lastName);
 
         // Assert
-        Assert.Equal(id, user.Id);
-        Assert.Equal(firstName, user.FirstName);
-        Assert.Equal(lastName, user.LastName);
+        Assert.That(user.Id, Is.EqualTo(id));
+        Assert.That(user.FirstName, Is.EqualTo(firstName));
+        Assert.That(user.LastName, Is.EqualTo(lastName));
     }
 
-    [Fact]
+    [Test]
     public void User_CanSetAndGetProperties()
     {
         // Arrange
@@ -36,12 +36,12 @@ public class UserTests
         user.LastName = newLastName;
 
         // Assert
-        Assert.Equal(newId, user.Id);
-        Assert.Equal(newFirstName, user.FirstName);
-        Assert.Equal(newLastName, user.LastName);
+        Assert.That(user.Id, Is.EqualTo(newId));
+        Assert.That(user.FirstName, Is.EqualTo(newFirstName));
+        Assert.That(user.LastName, Is.EqualTo(newLastName));
     }
 
-    [Fact]
+    [Test]
     public void User_CanAssignContacts()
     {
         // Arrange
@@ -55,12 +55,12 @@ public class UserTests
         user.Contacts = contacts;
 
         // Assert
-        Assert.NotNull(user.Contacts);
-        Assert.Single(user.Contacts);
-        Assert.Equal("Email", user.Contacts[0].Type);
+        Assert.That(user.Contacts, Is.Not.Null);
+        Assert.That(user.Contacts, Has.Count.EqualTo(1));
+        Assert.That(user.Contacts[0].Type, Is.EqualTo("Email"));
     }
 
-    [Fact]
+    [Test]
     public void User_CanAssignAddresses()
     {
         // Arrange
@@ -74,8 +74,8 @@ public class UserTests
         user.Addresses = addresses;
 
         // Assert
-        Assert.NotNull(user.Addresses);
-        Assert.Single(user.Addresses);
-        Assert.Equal("New York", user.Addresses[0].City);
+        Assert.That(user.Addresses, Is.Not.Null);
+        Assert.That(user.Addresses, Has.Count.EqualTo(1));
+        Assert.That(user.Addresses[0].City, Is.EqualTo("New York"));
     }
 }

@@ -8,7 +8,7 @@ namespace ContactBook.Tests.Handlers;
 
 public class CreateUserCommandHandlerTests
 {
-    [Fact]
+    [Test]
     public async Task Handle_CreatesUser_WithCorrectProperties()
     {
         // Arrange
@@ -29,14 +29,14 @@ public class CreateUserCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal("John", result.FirstName);
-        Assert.Equal("Doe", result.LastName);
-        Assert.False(string.IsNullOrEmpty(result.Id));
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.FirstName, Is.EqualTo("John"));
+        Assert.That(result.LastName, Is.EqualTo("Doe"));
+        Assert.That(string.IsNullOrEmpty(result.Id), Is.False);
         mockRepository.Verify(r => r.CreateAsync(It.IsAny<User>()), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public async Task Handle_GeneratesUniqueId_ForEachUser()
     {
         // Arrange
@@ -53,10 +53,10 @@ public class CreateUserCommandHandlerTests
         var result2 = await handler.Handle(command2, CancellationToken.None);
 
         // Assert
-        Assert.NotEqual(result1.Id, result2.Id);
+        Assert.That(result1.Id, Is.Not.EqualTo(result2.Id));
     }
 
-    [Fact]
+    [Test]
     public async Task Handle_CallsRepository_WithCorrectUser()
     {
         // Arrange
@@ -77,9 +77,9 @@ public class CreateUserCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(capturedUser);
-        Assert.Equal(result.Id, capturedUser.Id);
-        Assert.Equal("Alice", capturedUser.FirstName);
-        Assert.Equal("Johnson", capturedUser.LastName);
+        Assert.That(capturedUser, Is.Not.Null);
+        Assert.That(capturedUser.Id, Is.EqualTo(result.Id));
+        Assert.That(capturedUser.FirstName, Is.EqualTo("Alice"));
+        Assert.That(capturedUser.LastName, Is.EqualTo("Johnson"));
     }
 }
